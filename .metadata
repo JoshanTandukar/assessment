@@ -1,0 +1,45 @@
+# This file tracks properties of this Flutter project.
+# Used by Flutter tool to assess capabilities and perform upgrades etc.
+#
+# This file should be version controlled and should not be manually edited.
+
+version:
+  revision: "f12687dd5920f8568e27140b5aeb9e36882f6913"
+  channel: "stable"
+
+project_type: app
+
+# Tracks metadata for the flutter migrate command
+migration:
+  platforms:
+    - platform: root
+      create_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+      base_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+    - platform: android
+      create_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+      base_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+    - platform: ios
+      create_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+      base_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+    - platform: linux
+      create_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+      base_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+    - platform: macos
+      create_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+      base_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+    - platform: web
+      create_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+      base_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+    - platform: windows
+      create_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+      base_revision: f12687dd5920f8568e27140b5aeb9e36882f6913
+
+  # User provided section
+
+  # List of Local paths (relative to this file) that should be
+  # ignored by the migrate tool.
+  #
+  # Files that are not part of the templates will be ignored by default.
+  unmanaged_files:
+    - 'lib/main.dart'
+    - 'ios/Runner.xcodeproj/project.pbxproj'

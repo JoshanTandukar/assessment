@@ -1,0 +1,1 @@
+const encryptionKey = "test test";

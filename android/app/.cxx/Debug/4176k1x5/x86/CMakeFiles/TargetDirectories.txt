@@ -1,0 +1,2 @@
+/Users/joshantandukar/workspace/assessment/android/app/.cxx/Debug/4176k1x5/x86/CMakeFiles/edit_cache.dir
+/Users/joshantandukar/workspace/assessment/android/app/.cxx/Debug/4176k1x5/x86/CMakeFiles/rebuild_cache.dir
