@@ -1,4 +1,3 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -19,7 +18,10 @@ import 'package:auto_route/auto_route.dart' as _i4;
 /// [_i1.EmptyRouterPage]
 class EmptyRouter extends _i4.PageRouteInfo<void> {
   const EmptyRouter({List<_i4.PageRouteInfo>? children})
-    : super(EmptyRouter.name, initialChildren: children);
+      : super(
+          EmptyRouter.name,
+          initialChildren: children,
+        );
 
   static const String name = 'EmptyRouter';
 
@@ -35,7 +37,10 @@ class EmptyRouter extends _i4.PageRouteInfo<void> {
 /// [_i2.MainPage]
 class MainRoute extends _i4.PageRouteInfo<void> {
   const MainRoute({List<_i4.PageRouteInfo>? children})
-    : super(MainRoute.name, initialChildren: children);
+      : super(
+          MainRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'MainRoute';
 
@@ -51,7 +56,10 @@ class MainRoute extends _i4.PageRouteInfo<void> {
 /// [_i3.TodoAddPage]
 class TodoAddRoute extends _i4.PageRouteInfo<void> {
   const TodoAddRoute({List<_i4.PageRouteInfo>? children})
-    : super(TodoAddRoute.name, initialChildren: children);
+      : super(
+          TodoAddRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'TodoAddRoute';
 

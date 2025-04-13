@@ -127,9 +127,6 @@ class MainPageState extends ConsumerState<MainPage> {
       ref.read(todoProvider.notifier).state =
           await database.select(database.todoItems).get();
       _controller.sink.add(SwipeRefreshState.hidden);
-      ref.read(todoProvider.notifier).state.forEach((action) {
-        print(action);
-      });
     });
   }
 

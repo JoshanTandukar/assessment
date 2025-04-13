@@ -5,6 +5,7 @@ import 'package:assessment/global/app_color.dart';
 import 'package:assessment/l10n/app_localizations.dart';
 import 'package:assessment/main.dart';
 import 'package:assessment/model/item_model/item.dart';
+import 'package:assessment/pigeons/pigeons_api.dart';
 import 'package:assessment/presentation/common/common.dart';
 import 'package:assessment/presentation/common/sizebox_extension.dart';
 import 'package:assessment/utils/encryptor.dart';
@@ -190,6 +191,12 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
               data: encrypted,
             ),
           );
+      final _api = NotificationApi();
+      final message = NotificationMessage()
+        ..title = data.title
+        ..body = data.content
+        ..scheduleTime = 1000;
+      await _api.scheduleNotification(message);
       ref.context.router.popUntilRoot();
     } catch (e) {
       showToastMessage(e.toString());

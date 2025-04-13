@@ -1,0 +1,9 @@
+targets:
+  $default:
+    builders:
+      pigeon_build_runner|pigeon_builder:
+        options:
+          input: lib/pigeons/pigeons_api.dart
+          dart_out: lib/pigeons/pigeons_api.dart
+          kotlin_out: android/app/src/main/kotlin/com/example/assessment/PigeonApi.kt
+          kotlin_package: com.example.assessment
