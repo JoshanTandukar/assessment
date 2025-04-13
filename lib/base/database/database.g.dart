@@ -9,37 +9,13 @@ class $TodoItemsTable extends TodoItems
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $TodoItemsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _dataMeta = const VerificationMeta('data');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _titleMeta = const VerificationMeta('title');
-  @override
-  late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 6, maxTextLength: 32),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  static const VerificationMeta _contentMeta =
-      const VerificationMeta('content');
-  @override
-  late final GeneratedColumn<String> content = GeneratedColumn<String>(
-      'body', aliasedName, false,
+  late final GeneratedColumn<String> data = GeneratedColumn<String>(
+      'data', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
   @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns => [id, title, content, createdAt];
+  List<GeneratedColumn> get $columns => [data];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -50,44 +26,23 @@ class $TodoItemsTable extends TodoItems
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('title')) {
+    if (data.containsKey('data')) {
       context.handle(
-          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+          _dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
     } else if (isInserting) {
-      context.missing(_titleMeta);
-    }
-    if (data.containsKey('body')) {
-      context.handle(_contentMeta,
-          content.isAcceptableOrUnknown(data['body']!, _contentMeta));
-    } else if (isInserting) {
-      context.missing(_contentMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
+      context.missing(_dataMeta);
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   TodoItem map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TodoItem(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      title: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      content: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}body'])!,
-      createdAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      data: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}data'])!,
     );
   }
 
@@ -98,31 +53,18 @@ class $TodoItemsTable extends TodoItems
 }
 
 class TodoItem extends DataClass implements Insertable<TodoItem> {
-  final int id;
-  final String title;
-  final String content;
-  final DateTime createdAt;
-  const TodoItem(
-      {required this.id,
-      required this.title,
-      required this.content,
-      required this.createdAt});
+  final String data;
+  const TodoItem({required this.data});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['title'] = Variable<String>(title);
-    map['body'] = Variable<String>(content);
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['data'] = Variable<String>(data);
     return map;
   }
 
   TodoItemsCompanion toCompanion(bool nullToAbsent) {
     return TodoItemsCompanion(
-      id: Value(id),
-      title: Value(title),
-      content: Value(content),
-      createdAt: Value(createdAt),
+      data: Value(data),
     );
   }
 
@@ -130,123 +72,77 @@ class TodoItem extends DataClass implements Insertable<TodoItem> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TodoItem(
-      id: serializer.fromJson<int>(json['id']),
-      title: serializer.fromJson<String>(json['title']),
-      content: serializer.fromJson<String>(json['content']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      data: serializer.fromJson<String>(json['data']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'title': serializer.toJson<String>(title),
-      'content': serializer.toJson<String>(content),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'data': serializer.toJson<String>(data),
     };
   }
 
-  TodoItem copyWith(
-          {int? id, String? title, String? content, DateTime? createdAt}) =>
-      TodoItem(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        content: content ?? this.content,
-        createdAt: createdAt ?? this.createdAt,
+  TodoItem copyWith({String? data}) => TodoItem(
+        data: data ?? this.data,
       );
   TodoItem copyWithCompanion(TodoItemsCompanion data) {
     return TodoItem(
-      id: data.id.present ? data.id.value : this.id,
-      title: data.title.present ? data.title.value : this.title,
-      content: data.content.present ? data.content.value : this.content,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      data: data.data.present ? data.data.value : this.data,
     );
   }
 
   @override
   String toString() {
     return (StringBuffer('TodoItem(')
-          ..write('id: $id, ')
-          ..write('title: $title, ')
-          ..write('content: $content, ')
-          ..write('createdAt: $createdAt')
+          ..write('data: $data')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, content, createdAt);
+  int get hashCode => data.hashCode;
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is TodoItem &&
-          other.id == this.id &&
-          other.title == this.title &&
-          other.content == this.content &&
-          other.createdAt == this.createdAt);
+      identical(this, other) || (other is TodoItem && other.data == this.data);
 }
 
 class TodoItemsCompanion extends UpdateCompanion<TodoItem> {
-  final Value<int> id;
-  final Value<String> title;
-  final Value<String> content;
-  final Value<DateTime> createdAt;
+  final Value<String> data;
+  final Value<int> rowid;
   const TodoItemsCompanion({
-    this.id = const Value.absent(),
-    this.title = const Value.absent(),
-    this.content = const Value.absent(),
-    this.createdAt = const Value.absent(),
+    this.data = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   TodoItemsCompanion.insert({
-    this.id = const Value.absent(),
-    required String title,
-    required String content,
-    required DateTime createdAt,
-  })  : title = Value(title),
-        content = Value(content),
-        createdAt = Value(createdAt);
+    required String data,
+    this.rowid = const Value.absent(),
+  }) : data = Value(data);
   static Insertable<TodoItem> custom({
-    Expression<int>? id,
-    Expression<String>? title,
-    Expression<String>? content,
-    Expression<DateTime>? createdAt,
+    Expression<String>? data,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (title != null) 'title': title,
-      if (content != null) 'body': content,
-      if (createdAt != null) 'created_at': createdAt,
+      if (data != null) 'data': data,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  TodoItemsCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? title,
-      Value<String>? content,
-      Value<DateTime>? createdAt}) {
+  TodoItemsCompanion copyWith({Value<String>? data, Value<int>? rowid}) {
     return TodoItemsCompanion(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      content: content ?? this.content,
-      createdAt: createdAt ?? this.createdAt,
+      data: data ?? this.data,
+      rowid: rowid ?? this.rowid,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
+    if (data.present) {
+      map['data'] = Variable<String>(data.value);
     }
-    if (title.present) {
-      map['title'] = Variable<String>(title.value);
-    }
-    if (content.present) {
-      map['body'] = Variable<String>(content.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -254,10 +150,8 @@ class TodoItemsCompanion extends UpdateCompanion<TodoItem> {
   @override
   String toString() {
     return (StringBuffer('TodoItemsCompanion(')
-          ..write('id: $id, ')
-          ..write('title: $title, ')
-          ..write('content: $content, ')
-          ..write('createdAt: $createdAt')
+          ..write('data: $data, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -275,16 +169,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 }
 
 typedef $$TodoItemsTableCreateCompanionBuilder = TodoItemsCompanion Function({
-  Value<int> id,
-  required String title,
-  required String content,
-  required DateTime createdAt,
+  required String data,
+  Value<int> rowid,
 });
 typedef $$TodoItemsTableUpdateCompanionBuilder = TodoItemsCompanion Function({
-  Value<int> id,
-  Value<String> title,
-  Value<String> content,
-  Value<DateTime> createdAt,
+  Value<String> data,
+  Value<int> rowid,
 });
 
 class $$TodoItemsTableFilterComposer
@@ -296,17 +186,8 @@ class $$TodoItemsTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get content => $composableBuilder(
-      column: $table.content, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get data => $composableBuilder(
+      column: $table.data, builder: (column) => ColumnFilters(column));
 }
 
 class $$TodoItemsTableOrderingComposer
@@ -318,17 +199,8 @@ class $$TodoItemsTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get content => $composableBuilder(
-      column: $table.content, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get data => $composableBuilder(
+      column: $table.data, builder: (column) => ColumnOrderings(column));
 }
 
 class $$TodoItemsTableAnnotationComposer
@@ -340,17 +212,8 @@ class $$TodoItemsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => column);
-
-  GeneratedColumn<String> get content =>
-      $composableBuilder(column: $table.content, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<String> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => column);
 }
 
 class $$TodoItemsTableTableManager extends RootTableManager<
@@ -376,28 +239,20 @@ class $$TodoItemsTableTableManager extends RootTableManager<
           createComputedFieldComposer: () =>
               $$TodoItemsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> title = const Value.absent(),
-            Value<String> content = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
+            Value<String> data = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
           }) =>
               TodoItemsCompanion(
-            id: id,
-            title: title,
-            content: content,
-            createdAt: createdAt,
+            data: data,
+            rowid: rowid,
           ),
           createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String title,
-            required String content,
-            required DateTime createdAt,
+            required String data,
+            Value<int> rowid = const Value.absent(),
           }) =>
               TodoItemsCompanion.insert(
-            id: id,
-            title: title,
-            content: content,
-            createdAt: createdAt,
+            data: data,
+            rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

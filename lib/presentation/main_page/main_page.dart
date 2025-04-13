@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:assessment/base/database/database.dart';
 import 'package:assessment/global/app_color.dart';
 import 'package:assessment/l10n/app_localizations.dart';
 import 'package:assessment/main.dart';
+import 'package:assessment/model/item_model/item.dart';
 import 'package:assessment/route/app_router.gr.dart';
+import 'package:assessment/utils/encryptor.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,7 +57,9 @@ class MainPageState extends ConsumerState<MainPage> {
         actions: [
           IconButton(
             onPressed: () {
-              ref.context.router.push(TodoAddRoute());
+              ref.context.router.push(TodoAddRoute()).then((onValue) {
+                fetchData();
+              });
             },
             icon: Icon(
               Icons.add,
@@ -87,6 +92,7 @@ class MainPageState extends ConsumerState<MainPage> {
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           itemCount: result.length,
+                          physics: NeverScrollableScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
                             return _buildTodoList(
@@ -127,36 +133,39 @@ class MainPageState extends ConsumerState<MainPage> {
   }
 
   Widget _buildTodoList(TodoItem result) {
-    return Row(
+    String s = aesDecrypt(result.data);
+    Item dump = Item.fromJson(jsonDecode(s));
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
       children: [
         Text(
-          "${result.id}",
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          dump.title,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColor.neutral900,
                 fontWeight: FontWeight.w700,
               ),
         ),
         Text(
-          "${result.title}",
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          dump.content,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColor.neutral900,
                 fontWeight: FontWeight.w700,
               ),
         ),
         Text(
-          "${result.content}",
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          "${dump.dateTime}",
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColor.neutral900,
                 fontWeight: FontWeight.w700,
               ),
         ),
-        Text(
-          "${result.createdAt}",
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: AppColor.neutral900,
-                fontWeight: FontWeight.w700,
-              ),
-        ),
+        Divider(
+          color: AppColor.neutral200,
+          height: 2.h,
+        )
       ],
     );
   }

@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:assessment/base/database/database.dart';
 import 'package:assessment/global/app_color.dart';
 import 'package:assessment/l10n/app_localizations.dart';
 import 'package:assessment/main.dart';
+import 'package:assessment/model/item_model/item.dart';
 import 'package:assessment/presentation/common/common.dart';
 import 'package:assessment/presentation/common/sizebox_extension.dart';
+import 'package:assessment/utils/encryptor.dart';
+import 'package:assessment/utils/show_toast_message.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +33,9 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
   @override
   void initState() {
     super.initState();
+    conTitle.text = "Test";
+    conContent.text = "Test needs fires";
+    conDate.text = DateTime.now().toString();
   }
 
   @override
@@ -55,6 +64,7 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
+              20.sBHh,
               BeautifiedAppTextField(
                 hintText: AppLocalizations.of(context).yourTodoTitle,
                 controller: conTitle,
@@ -65,6 +75,7 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
                   return null;
                 },
               ),
+              20.sBHh,
               BeautifiedAppTextField(
                 hintText: AppLocalizations.of(context).yourTodoContent,
                 controller: conContent,
@@ -75,17 +86,49 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
                   return null;
                 },
               ),
-              BeautifiedAppTextField(
-                hintText: AppLocalizations.of(context).yourTodoTime,
-                controller: conDate,
+              20.sBHh,
+              DateTimeFormField(
+                initialValue: DateTime.parse(conDate.text),
+                padding: EdgeInsets.zero,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: AppColor.neutral950,
+                    ),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context).yourTodoTime,
+                  labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: AppColor.neutral600,
+                      ),
+                  hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: AppColor.neutral500,
+                      ),
+                  errorStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: AppColor.error400,
+                      ),
+                ),
+                firstDate: DateTime.now().add(
+                  const Duration(days: 10),
+                ),
+                lastDate: DateTime.now().add(
+                  const Duration(days: 40),
+                ),
+                initialPickerDateTime: DateTime.now().add(
+                  const Duration(days: 20),
+                ),
+                onChanged: (DateTime? value) {
+                  conDate.text = value.toString();
+                },
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    return AppLocalizations.of(context).validationTodoTitle;
+                  if (value != null) {
+                    return null;
                   }
-                  return null;
+                  return AppLocalizations.of(context).validationTodoTime;
                 },
               ),
-              20.sBHh,
+              30.sBHh,
               TextButton(
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
@@ -134,13 +177,22 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
   }
 
   void addToDatabase() async {
-    await database.into(database.todoItems).insert(
-          TodoItemsCompanion.insert(
-            title: conTitle.text,
-            content: conContent.text,
-            createdAt: DateTime.now(),
-          ),
-        );
-    ref.context.router.popUntilRoot();
+    Item data = Item(
+      id: getUuid(),
+      title: conTitle.text,
+      content: conContent.text,
+      dateTime: DateTime.parse(conDate.text),
+    );
+    String encrypted = aesEncrypt(jsonEncode(data));
+    try {
+      await database.into(database.todoItems).insert(
+            TodoItemsCompanion.insert(
+              data: encrypted,
+            ),
+          );
+      ref.context.router.popUntilRoot();
+    } catch (e) {
+      showToastMessage(e.toString());
+    }
   }
 }

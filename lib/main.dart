@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl_standalone.dart';
 
 import 'base/database/database.dart' show AppDatabase;
 
@@ -28,6 +29,8 @@ void main() async {
       DeviceOrientation.portraitDown,
     ],
   );
+
+  await findSystemLocale();
 
   runApp(
     const ProviderScope(
