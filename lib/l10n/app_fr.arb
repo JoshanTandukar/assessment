@@ -1,4 +1,11 @@
 {
     "@@locale": "fr",
-    "appName": "Assessment"
+    "appName": "Assessment",
+    "yourTodoTitle": "Your todo title goes here",
+    "yourTodoContent": "Your todo content goes here",
+    "yourTodoTime": "Your todo time goes here",
+    "validationTodoContent": "Todo content must not be empty.",
+    "validationTodoTitle": "Todo title must not be empty.",
+    "validationTodoTime": "Todo time must not be empty",
+    "addTodo": "Add Todo"
 }

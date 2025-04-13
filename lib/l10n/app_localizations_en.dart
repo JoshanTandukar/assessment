@@ -10,4 +10,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appName => 'Assessment';
+
+  @override
+  String get yourTodoTitle => 'Your todo title goes here';
+
+  @override
+  String get yourTodoContent => 'Your todo content goes here';
+
+  @override
+  String get yourTodoTime => 'Your todo time goes here';
+
+  @override
+  String get validationTodoContent => 'Todo content must not be empty.';
+
+  @override
+  String get validationTodoTitle => 'Todo title must not be empty.';
+
+  @override
+  String get validationTodoTime => 'Todo time must not be empty';
+
+  @override
+  String get addTodo => 'Add Todo';
 }

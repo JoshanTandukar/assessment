@@ -1,6 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:assessment/route/app_router.gr.dart';
 import 'package:assessment/route/app_router_path.dart';
+import 'package:auto_route/auto_route.dart';
 
 @RoutePage(name: 'EmptyRouter')
 class EmptyRouterPage extends AutoRouter {
@@ -15,6 +15,10 @@ class AppRouter extends RootStackRouter {
           initial: true,
           page: MainRoute.page,
           path: AppRouterPath.mainPage,
+        ),
+        AutoRoute(
+          page: TodoAddRoute.page,
+          path: AppRouterPath.todoAddPage,
         ),
       ];
 }

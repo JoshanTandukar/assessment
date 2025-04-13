@@ -103,6 +103,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Assessment'**
   String get appName;
+
+  /// No description provided for @yourTodoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your todo title goes here'**
+  String get yourTodoTitle;
+
+  /// No description provided for @yourTodoContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your todo content goes here'**
+  String get yourTodoContent;
+
+  /// No description provided for @yourTodoTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Your todo time goes here'**
+  String get yourTodoTime;
+
+  /// No description provided for @validationTodoContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Todo content must not be empty.'**
+  String get validationTodoContent;
+
+  /// No description provided for @validationTodoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Todo title must not be empty.'**
+  String get validationTodoTitle;
+
+  /// No description provided for @validationTodoTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Todo time must not be empty'**
+  String get validationTodoTime;
+
+  /// No description provided for @addTodo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Todo'**
+  String get addTodo;
 }
 
 class _AppLocalizationsDelegate
