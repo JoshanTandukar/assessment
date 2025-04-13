@@ -93,6 +93,7 @@ class MainPageState extends ConsumerState<MainPage> {
                           shrinkWrap: true,
                           itemCount: result.length,
                           physics: NeverScrollableScrollPhysics(),
+                          reverse: true,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
                             return _buildTodoList(
