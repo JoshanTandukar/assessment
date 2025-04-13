@@ -46,3 +46,7 @@ app.*.map.json
 .idea
 build
 pubspec.lock
+/android/.gradle/*
+/android/.idea/*
+/build/*
+/android/app/.cxx/*
