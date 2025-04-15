@@ -23,26 +23,38 @@ class TodoWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Text(
-          dump.title,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColor.neutral900,
-                fontWeight: FontWeight.w700,
+        Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 10.h,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                dump.title,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColor.neutral900,
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
-        ),
-        Text(
-          dump.content,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColor.neutral900,
-                fontWeight: FontWeight.w700,
+              Text(
+                dump.content,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColor.neutral900,
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
-        ),
-        Text(
-          "${DateTime.fromMillisecondsSinceEpoch(dump.dateTime)}",
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColor.neutral900,
-                fontWeight: FontWeight.w700,
+              Text(
+                "${DateTime.fromMillisecondsSinceEpoch(dump.dateTime)}",
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColor.neutral900,
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
+            ],
+          ),
         ),
         Divider(
           color: AppColor.neutral200,

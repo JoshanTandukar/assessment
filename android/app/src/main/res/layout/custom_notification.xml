@@ -14,15 +14,39 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center">
-        <ImageView
-            android:id="@+id/custom_image"
+        <RelativeLayout
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="0dp"
-            android:contentDescription="@string/sample"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/sample"/>
+            android:padding="0dp">
+
+            <ImageView
+                android:id="@+id/custom_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="0dp"
+                android:contentDescription="@string/sample"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/sample"/>
+
+            <!-- You can overlay more views here -->
+            <ImageView
+                android:id="@+id/custom_overlay"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:contentDescription="@string/sample"
+                android:foregroundGravity="center"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/dot_status" />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:orientation="vertical"
             android:padding="0dp"
@@ -85,8 +109,8 @@
         android:text="@string/like"
         android:textColor="#005FEE"
         android:background="@drawable/bordered_button"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
         android:textStyle="bold"
