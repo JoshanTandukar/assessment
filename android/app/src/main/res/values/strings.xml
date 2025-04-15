@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call">Incoming Call</string>
+    <string name="answer">Answer</string>
+    <string name="decline">Decline</string>
+    <string name="sample">sample</string>
+    <string name="review_code">Review code</string>
+    <string name="need_to_review_some_codes_at_7_pm">Need to review some codes at 7 PM</string>
+    <string name="now">now</string>
+    <string name="like">LIKE</string>
+</resources>

@@ -14,3 +14,10 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+flutter pub run pigeon \
+--input lib/pigeons/pigeons_api.dart \
+--dart_out lib/pigeons/pigeons_api.dart \
+--kotlin_out android/app/src/main/kotlin/com/example/assessment/NotificationApi.kt \
+--kotlin_package com.example.assessment

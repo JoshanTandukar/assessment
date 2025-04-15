@@ -34,9 +34,9 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
   @override
   void initState() {
     super.initState();
-    conTitle.text = "Test";
-    conContent.text = "Test needs fires";
-    conDate.text = DateTime.now().toString();
+    conTitle.text = "Review code";
+    conContent.text = "Need to review some codes at 7 PM";
+    conDate.text = DateTime.now().add(Duration(seconds: 10)).toIso8601String();
   }
 
   @override
@@ -149,6 +149,12 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
                     formKey.currentState?.save();
+                    DateTime selectedDate = DateTime.parse(conDate.text);
+                    if (selectedDate.isBefore(DateTime.now())) {
+                      showToastMessage(AppLocalizations.of(context)
+                          .validationTodoTimeFuture);
+                      return;
+                    }
                     addToDatabase();
                   }
                 },
@@ -178,12 +184,15 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
   }
 
   void addToDatabase() async {
+    final scheduledTime = DateTime.parse(conDate.text);
+    int id = uuidToInt(getUuid());
     Item data = Item(
-      id: getUuid(),
+      id: id.toString(),
       title: conTitle.text,
       content: conContent.text,
-      dateTime: DateTime.parse(conDate.text),
+      dateTime: scheduledTime.millisecondsSinceEpoch,
     );
+
     String encrypted = aesEncrypt(jsonEncode(data));
     try {
       await database.into(database.todoItems).insert(
@@ -193,13 +202,14 @@ class TodoAddPageState extends ConsumerState<TodoAddPage> {
           );
       final _api = NotificationApi();
       final message = NotificationMessage()
+        ..id = id
         ..title = data.title
         ..body = data.content
-        ..scheduleTime = 1000;
+        ..scheduleTime = scheduledTime.millisecondsSinceEpoch;
       await _api.scheduleNotification(message);
       ref.context.router.popUntilRoot();
     } catch (e) {
-      showToastMessage(e.toString());
+      print(e.toString());
     }
   }
 }

@@ -7,5 +7,6 @@
     "validationTodoContent": "Todo content must not be empty.",
     "validationTodoTitle": "Todo title must not be empty.",
     "validationTodoTime": "Todo time must not be empty",
+    "validationTodoTimeFuture": "Todo time must not be in future.",
     "addTodo": "Add Todo"
 }

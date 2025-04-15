@@ -30,5 +30,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get validationTodoTime => 'Todo time must not be empty';
 
   @override
+  String get validationTodoTimeFuture => 'Todo time must not be in future.';
+
+  @override
   String get addTodo => 'Add Todo';
 }

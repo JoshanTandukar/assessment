@@ -84,15 +84,16 @@ class NotificationApi {
 
   static const MessageCodec<Object?> pigeonChannelCodec = _NotificationApiCodec();
 
-  Future<void> sendNotification(NotificationMessage message) async {
-    const String __pigeon_channelName = 'dev.flutter.pigeon.assessment.NotificationApi.sendNotification';
+  /// Returns true if the app can schedule exact alarms (or permission was requested).
+  Future<bool> requestExactAlarmPermission() async {
+    const String __pigeon_channelName = 'dev.flutter.pigeon.assessment.NotificationApi.requestExactAlarmPermission';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
       binaryMessenger: __pigeon_binaryMessenger,
     );
     final List<Object?>? __pigeon_replyList =
-        await __pigeon_channel.send(<Object?>[message]) as List<Object?>?;
+        await __pigeon_channel.send(null) as List<Object?>?;
     if (__pigeon_replyList == null) {
       throw _createConnectionError(__pigeon_channelName);
     } else if (__pigeon_replyList.length > 1) {
@@ -101,12 +102,19 @@ class NotificationApi {
         message: __pigeon_replyList[1] as String?,
         details: __pigeon_replyList[2],
       );
+    } else if (__pigeon_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
     } else {
-      return;
+      return (__pigeon_replyList[0] as bool?)!;
     }
   }
 
-  Future<void> scheduleNotification(NotificationMessage message) async {
+  /// Schedules a notification using the native AlarmManager.
+  /// Returns true if successfully scheduled.
+  Future<bool> scheduleNotification(NotificationMessage message) async {
     const String __pigeon_channelName = 'dev.flutter.pigeon.assessment.NotificationApi.scheduleNotification';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
@@ -123,8 +131,13 @@ class NotificationApi {
         message: __pigeon_replyList[1] as String?,
         details: __pigeon_replyList[2],
       );
+    } else if (__pigeon_replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
     } else {
-      return;
+      return (__pigeon_replyList[0] as bool?)!;
     }
   }
 }

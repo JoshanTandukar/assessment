@@ -8,7 +8,7 @@ class Item {
   final String id;
   final String title;
   final String content;
-  final DateTime dateTime;
+  final int dateTime;
 
   Item({
     required this.id,

@@ -1,48 +1,64 @@
 package com.example.assessment
 
-import NotificationApi
-import NotificationMessage
-import android.app.NotificationChannel
-import android.app.NotificationManager
+
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
+import android.provider.Settings
 import android.util.Log
-import androidx.core.app.NotificationCompat
+import androidx.annotation.RequiresApi
 
 class NotificationApiImpl(private val context: Context) : NotificationApi {
 
-    override fun sendNotification(message: NotificationMessage) {
-        Log.d("asdfasdfadsfadsfadsf", "sendNotification: ")
-    }
-
-    override fun scheduleNotification(message: NotificationMessage) {
-        showNotification(message)
-    }
-
-    private fun showNotification(message: NotificationMessage) {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelId = "flutter_local_channel"
-
-        // Create channel for Android 8.0+
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "Flutter Notifications",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
+    override fun requestExactAlarmPermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            return if (!alarmManager.canScheduleExactAlarms()) {
+                val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                intent.data = Uri.parse("package:${context.packageName}")
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+                false
+            } else {
+                true
+            }
         }
+        return true
+    }
 
-        val builder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle(message.title ?: "No Title")
-            .setContentText(message.body ?: "No Body")
-            .setAutoCancel(true)
+    @RequiresApi(Build.VERSION_CODES.S)
+    override fun scheduleNotification(message: NotificationMessage): Boolean {
 
-        // Use the provided ID or fallback to a random one
-        val notificationId = message.id?.toInt() ?: System.currentTimeMillis().toInt()
-        notificationManager.notify(notificationId, builder.build())
+        Log.d("asdfasdfadsfasdfasdfadsf", "scheduleNotification: "+message.id)
+        Log.d("asdfasdfadsfasdfasdfadsf", "scheduleNotification: "+message.body)
+        Log.d("asdfasdfadsfasdfasdfadsf", "scheduleNotification: "+message.title)
+        Log.d("asdfasdfadsfasdfasdfadsf", "scheduleNotification: "+message.scheduleTime)
+
+        val intent = Intent(context, AlarmService::class.java).apply {
+            putExtra("title", message.title)
+            putExtra("body", message.body)
+            putExtra("id", message.id ?: 0)
+            putExtra("scheduleTime" , message.scheduleTime)
+        }
+        // Create a PendingIntent that will trigger the service when the alarm goes off
+        val pendingIntent = PendingIntent.getService(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Get the AlarmManager system service
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        message.scheduleTime?.let {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                it,
+                pendingIntent,)
+        }
+        return true
     }
 }

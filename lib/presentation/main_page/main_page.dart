@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:assessment/base/database/database.dart';
 import 'package:assessment/global/app_color.dart';
 import 'package:assessment/l10n/app_localizations.dart';
 import 'package:assessment/main.dart';
-import 'package:assessment/model/item_model/item.dart';
+import 'package:assessment/pigeons/pigeons_api.dart';
+import 'package:assessment/presentation/common/todo_widget.dart';
 import 'package:assessment/route/app_router.gr.dart';
-import 'package:assessment/utils/encryptor.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,6 +36,7 @@ class MainPageState extends ConsumerState<MainPage> {
   @override
   void initState() {
     super.initState();
+    requestPermission();
     fetchData();
   }
 
@@ -96,7 +96,7 @@ class MainPageState extends ConsumerState<MainPage> {
                           reverse: true,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            return _buildTodoList(
+                            return TodoWidget(
                               result[index],
                             );
                           },
@@ -130,41 +130,8 @@ class MainPageState extends ConsumerState<MainPage> {
     });
   }
 
-  Widget _buildTodoList(TodoItem result) {
-    String s = aesDecrypt(result.data);
-    Item dump = Item.fromJson(jsonDecode(s));
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Text(
-          dump.title,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColor.neutral900,
-                fontWeight: FontWeight.w700,
-              ),
-        ),
-        Text(
-          dump.content,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColor.neutral900,
-                fontWeight: FontWeight.w700,
-              ),
-        ),
-        Text(
-          "${dump.dateTime}",
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColor.neutral900,
-                fontWeight: FontWeight.w700,
-              ),
-        ),
-        Divider(
-          color: AppColor.neutral200,
-          height: 2.h,
-        )
-      ],
-    );
+  void requestPermission() async {
+    final api = NotificationApi();
+    await api.requestExactAlarmPermission();
   }
 }

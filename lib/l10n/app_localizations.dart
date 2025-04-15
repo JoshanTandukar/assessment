@@ -140,6 +140,12 @@ abstract class AppLocalizations {
   /// **'Todo time must not be empty'**
   String get validationTodoTime;
 
+  /// No description provided for @validationTodoTimeFuture.
+  ///
+  /// In en, this message translates to:
+  /// **'Todo time must not be in future.'**
+  String get validationTodoTimeFuture;
+
   /// No description provided for @addTodo.
   ///
   /// In en, this message translates to:
